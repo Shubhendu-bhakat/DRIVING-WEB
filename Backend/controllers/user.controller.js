@@ -9,8 +9,7 @@ module.exports.registerUser = async(req,res,next)=>{
     if(!errors.isEmpty()){
         return res.status(400).json({errors:errors.array()})
     }
-
-    
+  
     const { fullname, email, password } = req.body;
 
     //if the user already exists then return 400 status with specified error
