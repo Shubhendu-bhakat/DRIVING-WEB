@@ -5,13 +5,19 @@ const blackListTokenModel = require('../models/blackListToken.model');
 const captainModel = require('../models/captain.model');
 
 
-module.exports.authUser = async (req,resizeBy,next)=>{
+module.exports.authUser = async (req, res, next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
 
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
+
+    const isBlacklisted = await blackListTokenModel.findOne({ token: token });
+
+    if (isBlacklisted) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
 
     try {
 
@@ -26,9 +32,6 @@ module.exports.authUser = async (req,resizeBy,next)=>{
         return res.status(401).json({ message: 'Unauthorized' });
     }
 }
-
-//captain authenti8cation middleware
-
 
 module.exports.authCaptain = async (req, res, next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];

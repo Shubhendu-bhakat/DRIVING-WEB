@@ -1,17 +1,18 @@
 const captainModel = require('../models/captain.model');
+const captainService = require('../services/captain.service');
 const blackListTokenModel = require('../models/blackListToken.model');
 const { validationResult } = require('express-validator');
-const captainService = require('../services/captain.services')
-//captain registration 
+
+
 module.exports.registerCaptain = async (req, res, next) => {
- 
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
     const { fullname, email, password, vehicle } = req.body;
- // if with the same email already captain is registered
+
     const isCaptainAlreadyExist = await captainModel.findOne({ email });
 
     if (isCaptainAlreadyExist) {
@@ -37,7 +38,7 @@ module.exports.registerCaptain = async (req, res, next) => {
     res.status(201).json({ token, captain });
 
 }
- // login captain done 
+
 module.exports.loginCaptain = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -64,11 +65,11 @@ module.exports.loginCaptain = async (req, res, next) => {
 
     res.status(200).json({ token, captain });
 }
-//get captain profile
+
 module.exports.getCaptainProfile = async (req, res, next) => {
     res.status(200).json({ captain: req.captain });
 }
-//logout captain 
+
 module.exports.logoutCaptain = async (req, res, next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
 
