@@ -3,15 +3,15 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const captainSchema = new mongoose.Schema({
-    fullname: {
-        firstname: {
-            type: String,
-            required: true,
-            minlength: [ 3, 'Firstname must be at least 3 characters long' ],
+    fullname:{
+        firstname:{
+           type:String,
+           require:true,
+           minlength:[3,'Firstname must be 3 digite long'],
         },
-        lastname: {
-            type: String,
-            minlength: [ 3, 'Lastname must be at least 3 characters long' ],
+        lastname:{
+            type:String,
+            minlength:[3,'Last name must be 3 digite long'],
         }
     },
     email: {
