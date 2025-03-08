@@ -12,8 +12,10 @@ const UserProtectWrapper = ({
     const [ isLoading, setIsLoading ] = useState(true)
 
     useEffect(() => {
+        console.log(token)
         if (!token) {
             navigate('/login')
+            return
         }
 
         axios.get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
@@ -31,7 +33,7 @@ const UserProtectWrapper = ({
                 localStorage.removeItem('token')
                 navigate('/login')
             })
-    }, [ token ])
+    }, [token])
 
     if (isLoading) {
         return (
