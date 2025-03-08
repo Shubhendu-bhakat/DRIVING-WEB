@@ -10,6 +10,7 @@ const UserProtectWrapper = ({
     const navigate = useNavigate()
     const { user, setUser } = useContext(UserDataContext)
     const [ isLoading, setIsLoading ] = useState(true)
+    const [error, setError] = useState('');
 
     useEffect(() => {
         console.log(token)
@@ -29,15 +30,26 @@ const UserProtectWrapper = ({
             }
         })
             .catch(err => {
-                console.log(err)
-                localStorage.removeItem('token')
-                navigate('/login')
+                console.log(err);
+                if (err.response && err.response.status === 401) {
+                    setError('Unauthorized. Please log in again.');
+                } else if (err.response && err.response.status === 403) {
+                    setError('Forbidden. You do not have access to this resource.');
+                } else {
+                    setError('An error occurred. Please try again.');
+                }
+                localStorage.removeItem('token');
+                navigate('/login');
             })
     }, [token])
 
     if (isLoading) {
         return (
-            <div>Loading...</div>
+            <>
+             {error && <div style={{ color: 'red' }}>{error}</div>}
+             <div>Loading...</div>
+            </>
+           
         )
     }
 
