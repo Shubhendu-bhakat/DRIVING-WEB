@@ -51,7 +51,6 @@ module.exports.getDistanceTime = async (origin, destination) => {
         throw err;
     }
 }
-
 module.exports.getAutoCompleteSuggestions = async (input) => {
     if (!input) {
         throw new Error('query is required');
@@ -62,6 +61,7 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
 
     try {
         const response = await axios.get(url);
+        console.log(response.data); // Log the API response
         if (response.data.status === 'OK') {
             return response.data.predictions.map(prediction => prediction.description).filter(value => value);
         } else {
